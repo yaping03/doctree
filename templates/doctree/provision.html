@@ -1,0 +1,31 @@
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+<div class="h2 Center aligned text">{{ law.name }}</div>
+<div class="h3 Center aligned text">{{ now }}</div>
+    <table class="table table-bordered table-striped">
+    <tr>
+        <th>条例</th>
+        <th class="text-center">内容</th>
+    </tr>
+    {% for provision in provisions %}
+        <tr>
+            <td>{{ provision.serial_number }}</td>
+            <td>{{ provision.content }}</td>
+        </tr>
+    
+    {% endfor %}
+    
+    </table>
+</div>
+</body>
+</html>

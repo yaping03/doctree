@@ -1,0 +1,90 @@
+{% extends "doctree/base.html" %}
+
+{% block content %}
+
+{% load filters %}
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th width="25%">H4</th>
+					<th width="25%">H5</th>
+					<th width="25%">H6</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for result in results %}
+				<tr>
+					<td>
+						<a target="_blank" href="/knowledge/{{result.1.id}}">
+							<span class="label label-{{ result.1.getStatusClass }}">
+
+								{{ result.1.title }}
+							</span>
+						</a>
+						<blockquote>
+							<small>
+								{{ result.1.book.title }} - {{ result.1.book.summarized }}
+							</small>
+						</blockquote>
+					</td>
+					<td>
+						<span class="label label-{{ result.2.getStatusClass }}">
+							{{ result.2.title }}
+						</span>
+						<blockquote>
+							<small>
+								{{ result.2.book.title }} - {{ result.2.book.summarized }}
+							</small>
+						</blockquote>
+					</td>
+					<td>
+						<span class="label label-{{ result.3.getStatusClass }}">
+							{{ result.3.title }}
+						</span>
+						<blockquote>
+							<small>
+								{{ result.3.book.title }} - {{ result.3.book.summarized }}
+							</small>
+						</blockquote>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div class="panel-footer">
+		<ul class="pagination">
+			{% if knowledges.has_previous %}
+			<li><a href="{{ request|page:knowledges.previous_page_number }}">&laquo;</a></li>
+			{% endif %}
+		    
+			{% for p in near_range  %}
+			<li
+			{% ifequal p knowledges.number %}
+				class="active"
+			{% endifequal %}
+			>
+				<a href="{{ request|page:p }}">
+					{{ p }}
+				</a>
+			</li>
+
+			{% endfor %}
+
+			{% if knowledges.has_next %}
+			<li><a href="{{ request|page:knowledges.next_page_number }}">&raquo;</a></li>
+			{% endif %}
+		</ul>
+		<p>第{{ knowledges.number }}页，共{{ knowledges.paginator.num_pages }}页</p>
+	</div>
+</div>
+
+{% endblock content %}
+
+
+
+
+

@@ -1,0 +1,52 @@
+<tr>
+	<td>
+		<input type="radio" name="merge_to" value="{{ knowledge.id }}"/>
+	</td>
+	<td>
+		<input type="checkbox" name="merge_ids[]" value="{{ knowledge.id }}"/>
+	</td>
+	<td>{{ knowledge.level }}</td>
+	<td>
+		{{ knowledge.id }}
+	</td>
+	
+	{% for i in knowledge.range %}
+		<td>&nbsp;</td>
+	{% endfor %}
+
+	<td colspan="{{ knowledge.span }}" class="doctree-level-{{knowledge.level}}">
+    {% if knowledge.level != 6 %}
+        <a target="_blank" href="/admin/doctree/knowledge/{{knowledge.id}}/change">
+			{{ knowledge.title }}
+		</a>
+		<span class="label label-{{ knowledge.statusClass }}">{{ knowledge.status }}</span>
+         &nbsp; <span class="label label-success"><a target="_blank" href="/knowledge/{{ knowledge.id }}/add">添加</a> </span>
+         &nbsp; <span class="label label-info"><a target="_blank" href="/knowledge/{{ knowledge.id }}/edit">编辑</a> </span>
+        {% else %}
+         &nbsp; <a target="_blank" href="/admin/doctree/knowledge/{{knowledge.id}}/change">
+			{{ knowledge.title }}
+		</a>
+		<span class="label label-{{ knowledge.statusClass }}">{{ knowledge.status }}</span>
+        <span class="label label-info"> <a target="_blank" href="/knowledge/{{ knowledge.id }}/edit">编辑</a></span>
+
+    {% endif %}
+
+{#        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"> &nbsp; 添加 &nbsp; </button>#}
+{#        <button type="button" class="btn btn-info btn-sm"> &nbsp; 编辑 &nbsp; </button>#}
+		{% if knowledge.content %}
+		 &nbsp; <button type="button" class="btn btn-default btn-sm" data-toggle="collapse"  data-target="#kw-{{ knowledge.id }}">
+			内容
+		</button>
+		<div id="kw-{{ knowledge.id }}" class="collapse">
+			{{ knowledge.content }}
+		</div>
+		{% endif %}
+	</td>
+	<td>
+		<ul>
+			<li>{{ knowledge.book.title }}</li>
+			<li>{{ knowledge.book.summarized }}</li>
+		</ul>
+	</td>
+</tr>
+

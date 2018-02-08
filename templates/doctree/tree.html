@@ -1,0 +1,20 @@
+<table>
+	<tr>
+		<th>{{ parent_level }}</th>
+		{% for knowledge in parents %}
+		<th>{{ knowledge.title }}</th>
+		{% endfor %}
+	</tr>
+	<tr>
+		<th>{{ child_level }}</th>
+		{% for knowledges in children %}
+		<td>
+			<ul>
+			{% for knowledge in knowledges %}
+			<li>{{ knowledge.title }}</li>
+			{% endfor %}
+			</ul>
+		</td>
+		{% endfor %}
+	</tr>
+</table>

@@ -1,0 +1,72 @@
+{% load bootstrap3 %}
+
+<!DOCTYPE html>
+
+<html lang="zh-hans" >
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>H4</title>
+	
+		{% bootstrap_css %}
+		{% bootstrap_javascript %}
+
+		<style type="text/css">
+			.doctree-level-4 {
+				background-color: #849999
+			}
+			.doctree-level-5 {
+				background-color: #b0cccc
+			}
+			.doctree-level-6 {
+				background-color: #ddffff
+			}
+
+			.row1 {
+				background-color: #f9f9f9
+			}
+
+			.row2 {
+				background-color: #BFBFBF
+			}
+		</style>
+
+		<script type="text/javascript">
+			function beforeMerge() {
+				var checked = $("input[name='merge_ids[]']:checkbox:checked").length;
+				if(checked==0) {
+					alert("请选中需要合并的子目录");
+					return false;
+				} else {
+					var radio = $("input[name='merge_to']:radio:checked").val();
+					if(radio == undefined ){
+						alert("请选中需要合并的根目录");
+						return false;
+					} else if(radio == 0) {
+						return confirm("确定合并到H4？");
+					}
+				}
+				return true;
+			}
+
+			function beforeDelete() {
+				var checked = $("input[name='merge_ids[]']:checkbox:checked").length;
+				if(checked==0) {
+					alert("请选中需要删除的子目录");
+					return false;
+				}
+				c = confirm("确定删除所选项及其所有子元素？");
+				// alert(c)
+				return c;
+			}
+		</script>
+	    
+	</head>
+	
+	<body>
+		<div class="container">
+			{% block content %}{% endblock content %}
+		</div>
+	</body>
+</html>

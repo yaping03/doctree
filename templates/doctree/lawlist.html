@@ -1,0 +1,72 @@
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+<div class="h2 Center aligned text">法律信息</div>
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>ID</th>
+        <th>名称</th>
+        <th>单位</th>
+        <th>简称</th>
+        <th>颁布日期</th>
+        <th>修订日期</th>
+        <th>实施日期</th>
+        <th>结束日期</th>
+        <th>类型</th>
+    </tr>
+    {% for law in law_query %}
+        <tr>
+            <td>{{ law.id }}</td>
+            <td>  <a href="/lawtitle/{{ law.id }}" target="_blank">{{ law.name }}</a>  </td>
+            <td>{{ law.organization }}</td>
+            <td>{{ law.short_name }}</td>
+            <td>{{ law.publish_date|date:"Y年m月d日" }}</td>
+            <td>{{ law.modify_date|date:"Y年m月d日"  }}</td>
+            <td>{{ law.start_date |date:"Y年m月d日" }}</td>
+            <td>{{ law.end_date|date:"Y年m月d日"  }}</td>
+            <td>{{ law.type }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<nav aria-label="Page navigation">
+  <ul class="pagination pagination-lg">
+    <li>
+        {% if law_query.has_previous %}
+        <a href="/lawlist/?page={{ law_query.previous_page_number }}" aria-label="Previous">
+            {% else %}
+            <a href="/lawlist/?page={{ paginator.num_pages }}" aria-label="Previous">
+        {% endif %}
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+      {% for foo in num_pages %}
+            {% if foo == page_num %}
+                <li class="active"><a href="/lawlist/?page={{ foo }}">{{ foo }}</a></li>
+            {% else %}
+                <li><a href="/lawlist/?page={{ foo }}">{{ foo }}</a></li>
+            {% endif %}
+      {% endfor %}
+    <li>
+        {% if law_query.has_next %}
+        <a href="/lawlist/?page={{ law_query.next_page_number }}" aria-label="Next">
+            {% else %}
+            <a href="/lawlist/?page=1" aria-label="Next">
+        {% endif %}
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+</div>
+</body>
+</html>

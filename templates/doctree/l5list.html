@@ -1,0 +1,70 @@
+{% extends "doctree/base.html" %}
+
+{% block content %}
+
+{% load filters %}
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Count</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for relationship in relationships %}
+				<tr>
+					<td>
+						{% if level is 5 %}
+						<a target="_blank" href="/show_relationship/{{relationship.title}}">
+							{{ relationship.title }}
+						</a>
+						{% elif level is 4 %}
+						<a target="_blank" href="/doctree/{{relationship.title}}">
+							{{ relationship.title }}
+						</a>
+						{% endif %}
+					</td>
+					<td>
+						{{ relationship.count }}
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div class="panel-footer">
+		<ul class="pagination">
+			{% if relationships.has_previous %}
+			<li><a href="{{ request|page:relationships.previous_page_number }}">&laquo;</a></li>
+			{% endif %}
+		    
+			{% for p in near_range  %}
+			<li
+			{% ifequal p relationships.number %}
+				class="active"
+			{% endifequal %}
+			>
+				<a href="{{ request|page:p }}">
+					{{ p }}
+				</a>
+			</li>
+
+			{% endfor %}
+
+			{% if relationships.has_next %}
+			<li><a href="{{ request|page:relationships.next_page_number }}">&raquo;</a></li>
+			{% endif %}
+		</ul>
+		<p>第{{ relationships.number }}页，共{{ relationships.paginator.num_pages }}页</p>
+	</div>
+</div>
+
+{% endblock content %}
+
+
+
+
+

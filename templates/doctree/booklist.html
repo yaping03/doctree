@@ -1,0 +1,58 @@
+{% extends "doctree/base.html" %}
+
+{% block content %}
+
+{% load filters %}
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>书名</th>
+					<th>ID</th>
+					<th>整理者</th>
+					<th>PENDING</th>
+					<th>PASS</th>
+					<th>REJECT</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for aggregate in aggregates%}
+					{% for i, book in aggregate|enum %}
+						<tr>
+							{% if i is 0 %}
+							<td rowspan="{{ aggregate|length }}" style="vertical-align: middle">
+								{{ book.title }}
+							</td>
+							{% endif %}
+							<td>
+								{{ book.id }}
+							</td>
+                            <td>{{ book.summarized }} &nbsp; <span class="label label-success"><a href="/bookchapter/{{ book.id }}">查看章节</a></span>
+                                 &nbsp; <span class="label label-info"><a href="/kwlist?page=1&book_id={{ book.id }}&status=&search=">查看H4</a></span>
+                            </td>
+							<td>
+								{{ book.statusCount.pending }}
+							</td>
+							<td>
+								{{ book.statusCount.pass }}
+							</td>
+							<td>
+								{{ book.statusCount.reject }}
+							</td>
+						</tr>
+					{% endfor %}
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	
+</div>
+
+{% endblock content %}
+
+
+
+
+

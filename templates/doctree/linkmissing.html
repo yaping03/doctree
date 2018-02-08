@@ -1,0 +1,79 @@
+{% extends "doctree/base.html" %}
+
+{% block content %}
+
+{% load filters %}
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>源数据</th>
+					<th>词</th>
+					<th>连接到</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for link in links %}
+				<tr>
+					<td>
+						<a target="_blank" href="/knowledge/{{link.heading.id}}">
+							<span class="label label-{{ link.heading.getStatusClass }}">
+								{{ link.heading.title }}
+							</span>
+						</a>
+						{% if link.heading.id is not link.source.id %}
+						<blockquote>
+							<small>
+								H{{ link.source.level }} - {{ link.source.title }}
+							</small>
+						</blockquote>
+						{% endif %}
+					</td>
+					<td>
+						{{ link.word }}
+					</td>
+					<td>
+						<span class="label label-{{ link.link.getStatusClass }}">
+							{{ link.link.title }}
+						</span>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div class="panel-footer">
+		<ul class="pagination">
+			{% if links.has_previous %}
+			<li><a href="{{ request|page:links.previous_page_number }}">&laquo;</a></li>
+			{% endif %}
+		    
+			{% for p in near_range  %}
+			<li
+			{% ifequal p links.number %}
+				class="active"
+			{% endifequal %}
+			>
+				<a href="{{ request|page:p }}">
+					{{ p }}
+				</a>
+			</li>
+
+			{% endfor %}
+
+			{% if links.has_next %}
+			<li><a href="{{ request|page:links.next_page_number }}">&raquo;</a></li>
+			{% endif %}
+		</ul>
+		<p>第{{ links.number }}页，共{{ links.paginator.num_pages }}页</p>
+	</div>
+</div>
+
+{% endblock content %}
+
+
+
+
+

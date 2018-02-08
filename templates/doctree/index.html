@@ -1,0 +1,70 @@
+{% extends "doctree/base.html" %}
+
+{% block content %}
+
+{% load filters %}
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<ol>
+			<li>
+				<a target="_blank" href="/booklist">
+					书目统计
+				</a>
+			</li>
+			<li>
+				<a target="_blank" href="/kwlist">
+					H4知识点汇总
+				</a>
+			</li>
+			<li>
+				<a target="_blank" href="/rejectlist">
+					REJECT 列表
+				</a>
+			</li>
+			<li>
+				<a target="_blank" href="/rejectlist?status=pending">
+					PENDING 列表
+				</a>
+			</li>
+			<li>
+				<a target="_blank" href="/l5list?level=4">
+					H4 统计（所有）
+				</a>
+			</li>
+			<li>
+				<a target="_blank" href="/l5list?level=4&status=pass">
+					H4 统计（PASS）
+				</a>
+			</li>
+			<li>
+				<a target="_blank" href="/l5list">
+					H5 统计 （所有）
+				</a>
+			</li>
+			<li>
+				<a target="_blank" href="/l5list?status=pass">
+					H5 统计 （PASS）
+				</a>
+			</li>
+			<li>
+				<a target="_blank" href="/linkmissing?sort=1">
+					链接统计 （从短到长）
+				</a>
+			</li>
+			<li>
+				<a target="_blank" href="/linkmissing?sort=1">
+					链接统计 （从长到短）
+				</a>
+			</li>
+            <li>
+				<a target="_blank" href="/lawlist">
+					法律相关
+				</a>
+			</li>
+		</ol>
+	</div>
+</div>
+
+
+{% endblock content %}

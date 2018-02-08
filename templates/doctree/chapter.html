@@ -1,0 +1,31 @@
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+<div class="h2 Center aligned text">{{ book.title }}-{{ book.summarized }}</div>
+<table class="table table-bordered table-striped">
+    {% for chapter in chapters %}
+        <tr> <td>{{ chapter.title }}</td> <td></td>  <td></td></tr>
+    {% for section in sections %}
+        {% if section.pid == chapter.id %}
+            <tr><td> </td>  <td>{{ section.title }}</td> <td></td></tr>
+        {% endif %}
+    {% for title in titles %}
+       {% if title.pid == section.id and section.pid == chapter.id%}
+            <tr> <td> </td> <td> </td> <td> {{ title.title }}</td></tr>
+        {% endif %}
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
+</table>
+</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{#{% load count_child %}#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+<div class="h2 Center aligned text">{{ law.name }}</div>
+<table class="table table-bordered table-striped">
+{% if ed_titles %}
+        {% for ed_title in ed_titles %}
+        <tr> <td>第{{ ed_title.self_num }}编 ：{{ ed_title.name }}</td> <td></td>  <td></td></tr>
+    {% for chapter_title in chapter_titles %}
+        {% if chapter_title.parent_id == ed_title.id %}
+            <tr><td> </td>  <td><a href="/provision/{{ law.id }}/chapter/{{ chapter_title.id }}">第{{ chapter_title.self_num }}章 ：{{ chapter_title.name }}</a></td> <td></td></tr>
+        {% endif %}
+    {% for section_title in section_titles %}
+       {% if section_title.parent_id == chapter_title.id and chapter_title.parent_id == ed_title.id%}
+            <tr> <td> </td> <td> </td> <td> <a href="/provision/{{ law.id }}/section/{{ section_title.id }}"> 第{{ section_title.self_num }}节 ：{{ section_title.name }}</a> </td></tr>
+        {% endif %}
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
+
+{% else %}
+
+    {% for chapter_title in chapter_titles %}
+            <tr><td><a href="/provision/{{ law.id }}/chapter/{{ chapter_title.id }}">第{{ chapter_title.self_num }}章 ：{{ chapter_title.name }}</a></td> <td></td></tr>
+    {% for section_title in section_titles %}
+       {% if section_title.parent_id == chapter_title.id %}
+            <tr><td> </td> <td><a href="/provision/{{ law.id }}/section/{{ section_title.id }}">第{{ section_title.self_num }}节 ：{{ section_title.name }}</a> </td></tr>
+        {% endif %}
+    {% endfor %}
+    {% endfor %}
+
+{% endif %}
+
+</table>
+</div>
+</body>
+</html>

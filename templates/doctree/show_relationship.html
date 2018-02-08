@@ -1,0 +1,81 @@
+{% extends "doctree/base.html" %}
+
+{% block content %}
+
+{% load filters %}
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th width="25%">H4</th>
+					<th width="25%">{{ title }}</th>
+					<th width="25%">H6</th>
+					<th>Book</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for knowledge in knowledges %}
+				<tr>
+					<td>
+						【{{ knowledge.parent.id }}】
+						{{ knowledge.parent.title }}
+					</td>
+					<td>
+						<a target="_blank" href="/admin/doctree/knowledge/{{knowledge.id}}/change">
+							【{{ knowledge.id }}】
+						</a>
+						{{ knowledge.content }}
+					</td>
+					<td>
+						<ul>
+							{% for child in knowledge.children %}
+							<li>{{ child.title}}</li>
+							{% endfor %}
+						</ul>
+					</td>
+					<td>
+						<ul>
+							<li>{{ knowledge.book.title }}</li>
+							<li>{{ knowledge.book.summarized }}</li>
+						</ul>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div class="panel-footer">
+		<ul class="pagination">
+			{% if knowledges.has_previous %}
+			<li><a href="{{ request|page:knowledges.previous_page_number }}">&laquo;</a></li>
+			{% endif %}
+		    
+			{% for p in near_range  %}
+			<li
+			{% ifequal p knowledges.number %}
+				class="active"
+			{% endifequal %}
+			>
+				<a href="{{ request|page:p }}">
+					{{ p }}
+				</a>
+			</li>
+
+			{% endfor %}
+
+			{% if knowledges.has_next %}
+			<li><a href="{{ request|page:knowledges.next_page_number }}">&raquo;</a></li>
+			{% endif %}
+		</ul>
+		<p>第{{ knowledges.number }}页，共{{ knowledges.paginator.num_pages }}页</p>
+	</div>
+</div>
+
+{% endblock content %}
+
+
+
+
+

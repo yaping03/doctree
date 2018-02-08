@@ -1,0 +1,58 @@
+{% extends "doctree/base.html" %}
+
+
+{% block content %}
+<div class="panel panel-default">
+	<form method="POST" action="/docmerge">
+		{% csrf_token %}
+		<input type="hidden" name="prev_url" value="{{ request.path }}"/>
+		<div class="panel-heading">
+			<div class="row">
+				<div class="col-md-3">
+					<input type="submit" class="btn btn-success" name="action" value="合并" onclick="return beforeMerge();">
+				</div>
+				<div class="col-md-3">
+					<input type="submit" class="btn btn-danger" name="action" value="删除" onclick="return beforeDelete();">
+				</div>
+			</div>
+		</div>
+		<div class="panel-body">
+
+			<div class="row">
+				{% for parent in parents %}
+				<div class="col-md-3 {% cycle 'row1' 'row2' 'row3' %}">
+					<p>{{ parent.book.title }}-{{ parent.book.summarized }}</p>
+					<input type="radio" name="merge_to" value="{{ parent.id }}"/>合并到
+					<h4>
+						<input type="checkbox" name="merge_ids[]" value="{{ parent.id }}"/>
+						<a target="_blank" href="/knowledge/{{parent.id}}">{{ parent.title }}</a>
+					</h4>
+					<span class="label label-{{ parent.statusClass }}">{{ parent.status }}</span>
+					<p class="lead">{{ parent.content }}</p>
+
+					{% if parent.children %}
+						<ul>
+							{% for knowledge in parent.children %}
+							<li>{{ knowledge.title }}</li>
+								{% if knowledge.children %}
+								<ul>
+									{% for child in knowledge.children %}
+									<li>{{ child.title }}</li>
+									{% endfor %}
+								</ul>
+								{% endif %}
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</form>
+</div>
+{% endblock content %}
+
+
+
+
+

@@ -1,0 +1,127 @@
+{% extends "doctree/base.html" %}
+
+{% block content %}
+
+{% load filters %}
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<form method="GET">
+			<input type="hidden" name="page" value="1"/>
+			<div class="row">
+				<div class="col-md-3">
+					<select class="form-control" name="book_id">
+						<option value="">Book</option>
+						{% for book in books %}
+							<option value="{{book.id}}"
+							{{ request|get_field:'book_id'|is_selected:book.id}}
+							>
+								{{ book.id }}-{{ book.title }}-{{ book.summarized }}
+							</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="col-md-3">
+					<select class="form-control" name="status">
+						<option value="">Status</option>
+						{% for stat in status %}
+							<option value="{{stat}}"
+							{{ request|get_field:'status'|is_selected:stat}}
+							>
+								{{ stat }}
+							</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="col-md-3">
+					<input class="form-control" type="text" name="search" value="{{ search|none_2_null }}" placeholder="搜索" />
+				</div>
+				<div class="col-md-3">
+					<input class="btn btn-default" type="submit" value="筛选"/> &nbsp;
+                    <button type="button" id="add_h4" class="btn btn-primary">添加</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="panel-body">
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th width="4%">ID</th>
+					<th width="4%">状态</th>
+					<th width="5%">类别</th>
+					<th width="50%">Title</th>
+					<th>Book</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for knowledge in knowledges %}
+				<tr>
+					<td>{{ knowledge.id }}</td>
+					<td>
+						<span class="label label-{{ knowledge.getStatusClass }}">{{ knowledge.status }}</span>
+					</td>
+					<td>{{ knowledge.category }}</td>
+					<td>
+						<a target="_blank" href="/doctree/{{knowledge.title}}">
+							{{ knowledge.title }}
+						</a>
+						{% if knowledge.content %}
+						<button type="button" class="btn btn-default btn-sm" data-toggle="collapse"  data-target="#kw-{{ knowledge.id }}">
+							内容
+						</button>
+
+						<div id="kw-{{ knowledge.id }}" class="collapse">
+							{{ knowledge.content }}
+						</div>
+						{% endif %}
+					</td>
+					<td>
+						<ul>
+							<li>{{ knowledge.book.title }}</li>
+							<li>{{ knowledge.book.summarized }}</li>
+						</ul>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div class="panel-footer">
+		<ul class="pagination">
+			{% if knowledges.has_previous %}
+			<li><a href="{{ request|page:knowledges.previous_page_number }}">&laquo;</a></li>
+			{% endif %}
+		    
+			{% for p in near_range  %}
+			<li
+			{% ifequal p knowledges.number %}
+				class="active"
+			{% endifequal %}
+			>
+				<a href="{{ request|page:p }}">
+					{{ p }}
+				</a>
+			</li>
+
+			{% endfor %}
+
+			{% if knowledges.has_next %}
+			<li><a href="{{ request|page:knowledges.next_page_number }}">&raquo;</a></li>
+			{% endif %}
+		</ul>
+		<p>第{{ knowledges.number }}页，共{{ knowledges.paginator.num_pages }}页</p>
+	</div>
+</div>
+
+    <script>
+    $("#add_h4").click(function () {
+        window.location="/h4add"
+    })
+    </script>
+{% endblock content %}
+
+
+
+
+

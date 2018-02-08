@@ -1,0 +1,94 @@
+{% extends "doctree/base.html" %}
+{% block content %}
+<div class="panel panel-default">
+	<div class="panel-body">
+		<form method="POST" action="{% url 'kwmerge' %}">
+			{% csrf_token %}
+			<input type="hidden" name="prev_url" value="{{ request.path }}"/>
+
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th width="4%">根</th>
+						<th width="4%"></th>
+						<th width="4%">Level</th>
+						<th width="8%">ID</th>
+						<th width="60%" colspan="{{ knowledge.span }}">Title</th>
+						<th>Book</th>
+					</tr>
+					<tr>
+						<th>
+							<input type="radio" name="merge_to" value="0"/>
+						</th>
+						<th colspan="10">
+							提升为H4
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% include "doctree/knowledge_row.html" with knowledge=knowledge %}
+					{% for child in knowledge.children %}
+						{% include "doctree/knowledge_row.html" with knowledge=child %}
+						{% for grandchild in child.children %}
+							{% include "doctree/knowledge_row.html" with knowledge=grandchild %}
+						{% endfor %}
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class='row'>
+				<div class="col-md-3">
+					<input type="submit" class="btn btn-warning" name="action" value="从属" onclick="return beforeMerge();">
+				</div>
+				<div class="col-md-3">
+					<input type="submit" class="btn btn-danger" name="action" value="删除" onclick="return beforeDelete();">
+					<p class="text-danger">删除选中及其所有子项</p>
+				</div>
+				<div class="col-md-3">
+					<input type="submit" class="btn btn-success" name="action" value="通过">
+					<p class="text-success">选中项及其子元素均通过检验，可以使用</p>
+				</div>
+				<div class="col-md-3">
+					<input type="submit" class="btn btn-danger" name="action" value="未通过">
+					<p class="text-danger">选中项及其子元素均未通过检验，需重做</p>
+				</div>
+			</div>
+                <div class="clo-md-3">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        导出为 <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a href="#" class="export">excel</a></li>
+                        <li><a href="#" class="export">word</a></li>
+                        <li><a href="#" class="export">markdown</a></li>
+                      </ul>
+                    </div>
+                </div>
+		</form>
+	</div>
+</div>
+    <script>
+    $(".export").click(function () {
+        var checkid = [];
+        var type = $(this).html();
+        $("td input:checked").each(function () {
+            checkid.push($(this).parent().next().next().html());
+        });
+        if(checkid.length>0){
+                    $.ajax({
+                url:"/export_file",
+               type:"POST",
+               data:{type:type,checklist:JSON.stringify(checkid),"csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val()},
+               success:function(data) {
+                   window.location="/"+data
+               }})
+        }
+    });
+    </script>
+
+{% endblock content %}
+
+
+
+
+
